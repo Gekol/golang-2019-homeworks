@@ -3,40 +3,111 @@ package main
 import (
 	"fmt"
 	"os"
+
+	//"os"
 	"strconv"
 )
 
-var digits = map[string][]string{}
+const digits =
+	`
+ 000 
+0   0
+0   0
+0   0
+0   0
+0   0
+ 000 
 
-func printInt(num int) {
-	n_string := strconv.Itoa(num)
-	var res = [7]string{}
-	for pos, c := range n_string {
-		for j := 0; j < 7; j++ {
-			res[j] += digits[string(c)][j]
-			if (pos < len(n_string) - 1) {
-				res[j] += " "
+  1  
+1 1  
+  1  
+  1  
+  1  
+  1  
+11111
+
+ 222 
+2   2
+    2
+   2 
+  2  
+ 2   
+22222
+
+ 333 
+3   3
+    3
+  33 
+    3
+3   3
+ 333 
+
+   4 
+  44 
+ 4 4 
+4  4 
+44444
+   4 
+   4 
+
+55555
+5    
+5    
+5555 
+    5
+5   5
+ 555 
+
+ 666 
+6   6
+6    
+6666 
+6   6
+6   6
+ 666 
+
+77777
+    7
+    7
+   7 
+  7  
+ 7   
+ 7   
+
+ 888 
+8   8
+8   8
+ 888 
+8   8
+8   8
+ 888 
+
+ 999 
+9   9
+9   9
+ 9999
+    9
+9   9
+ 999 
+`
+
+func write_num(num string, digits []rune) {
+	current_digits := []rune(num)
+	for j := 0; j < 7; j++ {
+		for i := 0; i < len(current_digits) ; i++ {
+			digit, _ := strconv.Atoi(string(current_digits[i]))
+			index := 43 * digit + 1
+			for k := 0; k < 5; k++ {
+				fmt.Printf("%c", digits[index + k + j * 6])
 			}
+			fmt.Printf(" ")
 		}
-	}
-	for i := 0; i < 7; i++ {
-		fmt.Println(res[i])
+		fmt.Printf("\n")
 	}
 }
 
 func main() {
-	digits["0"] = []string{" 000 ", "0   0", "0   0", "0   0", "0   0", "0   0", " 000 "}
-	digits["1"] = []string{"  1  ", "1 1  ", "  1  ", "  1  ", "  1  ", "  1  ", "11111"}
-	digits["2"] = []string{" 222 ", "2   2", "    2", "   2 ", "  2  ", " 2   ", "22222"}
-	digits["3"] = []string{" 333 ", "3   3", "    3", "  33 ", "    3", "3   3", " 333 "}
-	digits["4"] = []string{"   4 ", "  44 ", " 4 4 ", "4  4 ", "44444", "   4 ", "   4 "}
-	digits["5"] = []string{"55555", "5    ", "5    ", "5555 ", "    5", "5   5", " 555 "}
-	digits["6"] = []string{" 666 ", "6   6", "6    ", "6666 ", "6   6", "6   6", " 666 "}
-	digits["7"] = []string{"77777", "    7", "    7", "   7 ", "  7  ", " 7   ", " 7   "}
-	digits["8"] = []string{" 888 ", "8   8", "8   8", " 888 ", "8   8", "8   8", " 888 "}
-	digits["9"] = []string{" 999 ", "9   9", "9   9", " 9999", "    9", "9   9", " 999 "}
-	var num int;
-	fmt.Print("Enter the number: ")
-	fmt.Fscan(os.Stdin, &num)
-	printInt(num)
+	symbols := []rune(digits)
+	var num string = os.Args[1]
+	write_num(num, symbols)
 }
