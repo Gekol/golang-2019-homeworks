@@ -3,13 +3,17 @@ package main
 import (
 	"fmt"
 	"os"
-
-	//"os"
 	"strconv"
 )
 
-const digits =
-	`
+const (
+	digitLength   = 43
+	digitHeight   = 7
+	digitWidth    = 5
+	digitInterval = 6
+)
+
+const digits = `
  000 
 0   0
 0   0
@@ -91,23 +95,35 @@ const digits =
  999 
 `
 
-func write_num(num string, digits []rune) {
-	current_digits := []rune(num)
-	for j := 0; j < 7; j++ {
-		for i := 0; i < len(current_digits) ; i++ {
-			digit, _ := strconv.Atoi(string(current_digits[i]))
-			index := 43 * digit + 1
-			for k := 0; k < 5; k++ {
-				fmt.Printf("%c", digits[index + k + j * 6])
+func writeAsterisk(num string) {
+	for i := 0; i < len(num)*digitInterval - 1; i++ {
+		fmt.Printf("*")
+	}
+	fmt.Println("")
+}
+
+func writeNum(num string, digits []rune) {
+	writeAsterisk(num)
+	for j := 0; j < digitHeight; j++ {
+		for _, i := range num {
+			digit, _ := strconv.Atoi(string(i))
+			index := digitLength*digit + 1
+			for k := 0; k < digitWidth; k++ {
+				fmt.Printf("%c", digits[index+k+j*digitInterval])
 			}
 			fmt.Printf(" ")
 		}
 		fmt.Printf("\n")
 	}
+	writeAsterisk(num)
 }
 
 func main() {
 	symbols := []rune(digits)
 	var num string = os.Args[1]
-	write_num(num, symbols)
+	if _, err := strconv.Atoi(num); err == nil {
+		writeNum(num, symbols)
+	} else {
+		fmt.Println("Invalid input!!!")
+	}
 }
